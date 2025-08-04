@@ -1,75 +1,48 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+// this is the main screen of the app
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useBusiness } from '../../contexts/BusinessContext'; // ✅ Import shared state
 
 export default function HomeScreen() {
+  const router = useRouter();
+
+  // ✅ Access the list of businesses from context (shared state)
+  const { businesses } = useBusiness();
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>🌸 Featured Businesses</Text>
+      
+      {/* ✅ Loop through each business and render a clickable card */}
+      {businesses.map((biz, index) => (
+        <TouchableOpacity 
+          key={index} 
+          style={styles.card}
+          // ✅ Navigate to SellerProfile and pass the business data as params
+          onPress={() => 
+            router.push({ pathname: '/SellerProfile', params: { biz: JSON.stringify(biz) } })
+          }
+        >
+          <Text style={styles.title}>{biz.name}</Text>
+          <Text>{biz.category} • {biz.location}</Text>
+        </TouchableOpacity>
+      ))}
+
+      {/* ✅ Button to open the Add Business form */}
+      <TouchableOpacity 
+        style={[styles.card, { backgroundColor: '#9c1c64' }]}
+        onPress={() => router.push('/add')}   // ✅ Navigate to add.tsx
+      >
+        <Text style={[styles.title, { color: '#fff' }]}>➕ Add Your Business</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  container: { flex: 1, padding: 20 },
+  header: { fontSize: 22, fontWeight: 'bold', color: '#9c1c64', marginBottom: 15 },
+  card: { backgroundColor: '#fde0ef', padding: 15, marginBottom: 10, borderRadius: 10 },
+  title: { fontSize: 16, fontWeight: 'bold', color: '#6a1b9a' }
 });
