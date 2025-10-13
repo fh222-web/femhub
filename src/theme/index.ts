@@ -1,7 +1,14 @@
 export const theme = {
   colors: {
-    primary: "#007AFF",
-    secondary: "#5856D6",
+    primary: "#f8c9d4", // pastel pink
+    secondary: "#d8c9f0", // lavender
+    accent: "#ffd9b3", // warm peach
+    status: "#ffb3c5", // status bar pink
+    label: "#ff00dd", // segmented control label pink
+    neutral: {
+      soft: "#f4f4f4", // soft gray
+      charcoal: "#333333", // charcoal text
+    },
     success: "#34C759",
     danger: "#FF3B30",
     warning: "#FF9500",
@@ -22,6 +29,22 @@ export const theme = {
       900: "#3A3A3C",
     },
   },
+  background: { 
+    gradients: { // handling gradients
+      diagonal: {
+        colors: ["#f8c9d4", "#fff"],
+        start: { x: 1, y: 1},
+        end: { x: 0, y: 0},
+        location: [0, 0.5, 1],
+      },
+      vertical: {
+        colors: ["#f8c9d4", "#fff"],
+        start: { x: 1, y: 0},
+        end: { x: 0, y: 0},
+        location: [0, 0.5, 1],
+      }
+    } 
+  },
   spacing: {
     xs: 4,
     sm: 8,
@@ -33,10 +56,12 @@ export const theme = {
     h1: {
       fontSize: 32,
       fontWeight: "bold" as const,
+      fontFamily: "Arial", 
     },
     h2: {
-      fontSize: 24,
+      fontSize: 24, // better h1 size
       fontWeight: "bold" as const,
+      // should be playfair display / serif
     },
     h3: {
       fontSize: 20,
@@ -44,11 +69,12 @@ export const theme = {
     },
     body: {
       fontSize: 16,
+      fontFamily: "Inter_400Regular", // Inter and sans-serif
     },
     caption: {
       fontSize: 14,
       color: "#666",
-    },
+    }, // emphasis: Script accent for logo/tagline
   },
   borderRadius: {
     sm: 4,

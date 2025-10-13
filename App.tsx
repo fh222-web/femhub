@@ -6,8 +6,10 @@ import { store, persistor } from "./src/redux/store";
 import { theme } from "./src/theme";
 import MainNavigation from "./src/navigation";
 import { GlobalLoader } from "./src/components";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
+
   return (
     <Provider store={store}>
       <PersistGate
@@ -18,9 +20,11 @@ export default function App() {
         }
         persistor={persistor}
       >
-        <MainNavigation />
-        <StatusBar style="auto" />
-        <GlobalLoader />
+        <SafeAreaProvider>
+            <MainNavigation />
+            <StatusBar style="auto" />
+            <GlobalLoader />
+        </SafeAreaProvider>
       </PersistGate>
     </Provider>
   );
